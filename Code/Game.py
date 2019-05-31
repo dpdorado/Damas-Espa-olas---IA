@@ -17,8 +17,6 @@ class Game(ABC):
         self.moves=[]
         self.state = GameState(to_move='', utility=0, board=[], moves=self.moves)
         self.View=view
-        view.set_model(self.init_state())
-        view.update()
 
     @abstractmethod
     def init_state(self):
@@ -56,7 +54,11 @@ class Game(ABC):
         return '<{}>'.format(self.__class__.__name__)
 
     @abstractmethod
-    def play_game(self):
+    def play_game(self,pos=None):
         """run game"""
-        pass'''
+        pass
+    
+    @abstractmethod
+    def update(self,list):
+        pass
 

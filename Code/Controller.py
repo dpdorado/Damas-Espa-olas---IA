@@ -10,8 +10,9 @@ class Controller:
     def __init__(self,view,model):
         self.View=view
         self.Model=model
+        super().__init__()
 
-    def update(self):
+    def update(self,pos=[]):
         pass
    
 

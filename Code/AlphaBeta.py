@@ -9,7 +9,7 @@ class AlphaBeta:
         player = self.game.to_move(state)    
         v = -float("inf")
         for a in self.game.actions(state):
-            v = max(v, self.min_value(self.game.result(state, a), alpha, beta,player,prof+1))
+            v = max(v, self.min_value(self.game.result(state, a), alpha, beta,player,prof-1))
             if v >= beta:
                 return v
             alpha = max(alpha, v)
@@ -20,7 +20,10 @@ class AlphaBeta:
             return self.game.utility(state, player)
         v = float("inf")
         for a in self.game.actions(state):
-            v = min(v, self.max_value(self.game.result(state, a), alpha, beta,player,prof+1))
+            if prof==1:
+                v=self.game.utility(self.game.result(state,a),player)
+            else:
+                v = min(v, self.max_value(self.game.result(state, a), alpha, beta,player,prof-1))
             if v <= alpha:
                 return v
             beta = min(beta, v)
