@@ -9,7 +9,7 @@ class Damas(Game):
         self.level=8
         self.state=self.state._replace(to_move=1)
         self.state=self.state._replace(board=self.init_state())
-        self.View.update(self.state.board)
+        self.View.update([self.state.board])
 
     #Inicia el tablero por defecto -> inicio del juego.
     def init_state(self):
@@ -31,7 +31,7 @@ class Damas(Game):
         return list
 
     def actions(self, state):
-        #retorna[i,j] son las pociicones
+        #retorna[i,j] son las posiciones
         moves=[]
         #player=state.to_move
         posY=0
@@ -104,10 +104,46 @@ class Damas(Game):
         board_r[move[0]][move[1]]=state.to_move
         state=state._raplace(board=board_r)
         return state
-    
+
+    def fichasAlrededor(self,tablero,posFicha,player):
+        nFichasProtec=0
+        if posFicha[0]<7 and posFicha[1]>0:
+            if tablero[posFicha[0]+1][posFicha[1]-1]==player or tablero[posFicha[0]+1][posFicha[1]-1]==player+2:
+                 nFichasProtec=nFichasProtec+1
+        if posFicha[0]<7 and posFicha[1]<7:
+            if tablero[posFicha[0]+1][posFicha[1]+1]==player or tablero[posFicha[0]+1][posFicha[1]+1]==player+2:
+                 nFichasProtec=nFichasProtec+1
+        if posFicha[0]>0 and posFicha[1]>0:
+            if tablero[posFicha[0]-1][posFicha[1]-1]==player or tablero[posFicha[0]-1][posFicha[1]-1]==player+2:
+                 nFichasProtec=nFichasProtec+1
+        if posFicha[0]>0 and posFicha[1]<7:     
+            if tablero[posFicha[0]-1][posFicha[1]+1]==player or tablero[posFicha[0]-1][posFicha[1]+1]==player+2:
+                nFichasProtec=nFichasProtec+1
+        return nFichasProtec
+
     def utility(self, state, player):
-        """Return the value of this final state to player."""
-        pass
+        
+        nFichasMaquina = 0
+        nFichasJugador = 0
+        posY = 0
+        for y in state[0]:
+            posX=0
+            for x in y:
+                if x==2 or x==4:
+                    nFichasMaquina+=  nFichasMaquina
+                    nFichasProtecM=nFichasProtecM+self.fichasAlrededor(state[0],[posY,posX],2)
+                if x==1 or x==3:
+                    nFichasJugador+= nFichasJugador
+                    nFichasProtecJ=nFichasProtecJ+self.fichasAlrededor(state[0],[posY,posX],1)
+                posX=posX+1
+            posY=posY+1
+        """Se calcula dandole mas valor al multiplicador del numero de reinas de la maquina y del jugador
+        para calcular la diferencia entre el primero y el segundo mas la misma operación con los peones
+        dandole un valor de 5 multiplicador mas 2 * la cantidad de fichascustodiadas de la maquina 
+        menos la cantidad de fichas custodiadas de la maquina"""
+        """10 * nFichasReinasM - 10* nFichasReinasJ +""" 
+        utility =  5*nFichasMaquina  - 5*nFichasJugador +  2 * nFichasProtecM - nFichasProtecJ
+        return utility;
     
     def terminal_test(self, state):
         """Return True if this is a final state for the game."""
@@ -192,5 +228,12 @@ class Damas(Game):
                 count= count+1 if item==1 else count    
         return count
 
+    def get_tipo_ficha(self,tipoFicha):
+        reina = 1
+        peon = 0
+        if tipoFicha == 1:
+            return reina
+        else:
+            return peon
   
         
