@@ -3,8 +3,6 @@ from tkinter import Tk
 from Damas import Damas
 from ControllerDamas import ControllerDamas
 
-
-
 if __name__=="__main__":
     #print(init_state())
     root = Tk()

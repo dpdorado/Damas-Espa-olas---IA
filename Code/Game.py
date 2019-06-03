@@ -1,5 +1,6 @@
 from collections import namedtuple
 from abc import ABC, abstractmethod
+from AlphaBeta import AlphaBeta
 
 
 class Game(ABC):
@@ -17,6 +18,7 @@ class Game(ABC):
         self.moves=[]
         self.state = GameState(to_move='', utility=0, board=[], moves=self.moves)
         self.View=view
+        self.machine= AlphaBeta(self)
 
     @abstractmethod
     def init_state(self):
@@ -60,5 +62,9 @@ class Game(ABC):
     
     @abstractmethod
     def update(self,list):
+        pass
+
+    @abstractmethod
+    def move_machine(self,model,player,prof):
         pass
 

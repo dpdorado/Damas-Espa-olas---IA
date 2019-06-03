@@ -7,6 +7,7 @@ Created on Tue Sep 25 09:31:26 2018
 """
 from tkinter import *
 from Controller import Controller
+from tkinter import messagebox
 import time
 
 class App:
@@ -35,7 +36,19 @@ class App:
         def handler(event, self=self):
             return self.__onClick(event)
         self.canvas.bind('<Button-1>', handler)
-        
+
+    def get_player(self):
+        return self.player
+
+    def set_player(self,player):
+        self.player=player
+
+    def get_model(self):
+        return self.model
+
+    def set_model(self,list):
+        self.model=list
+
     def __onClick(self,event):
 
         i=int(event.y/self.cellheight)
@@ -78,16 +91,35 @@ class App:
                 val=self.model[i][j]
                 x=j*self.cellwidth
                 y=i*self.cellheight
-                if(val ==1):
-                    #pinta azul
-                    self.canvas.create_oval(x,y,x+self.cellwidth,y+self.cellheight, fill='red')
-                elif(val ==2):
-                    #pinta rojo
-                    self.canvas.create_oval(x,y,x+self.cellwidth,y+self.cellheight, fill='blue')
-                    
+                #Mejorar, un método pintar ficha, uno pintar ectangulo->se le pasa l color
+                if val ==1:
+                    #Pinta un Peon del jugador 1
+                    self.canvas.create_oval(x,y,x+self.cellwidth,y+self.cellheight, fill='#CD5515')
+                elif val ==2:
+                    #Pinta un Peon del jugador 2
+                    self.canvas.create_oval(x,y,x+self.cellwidth,y+self.cellheight, fill='#161476')
+                elif val==3:
+                    #Pinta una Dama del jugador 1
+                    self.canvas.create_oval(x,y,x+self.cellwidth,y+self.cellheight, fill='#CD8515')
+                elif val==4:
+                    #Pinta una Dama del jugador 2
+                    self.canvas.create_oval(x,y,x+self.cellwidth,y+self.cellheight, fill='#AB15CD')
+                elif val==0:
+                    #Pinta una casilla del tablero con su correspondiente color -> tapa las fichas eliminadas.
+                    self.canvas.create_rectangle(x,y,x+self.cellwidth,y+self.cellheight, fill='white' if (i+j)%2==0 else 'black')
+    
     def update(self,list=None):
         #arreglar, list contiene un movimiento de user  y movimiento machine
-        flag=0
+        #flag=0
+
+        if list is None:
+            self.drawChips()
+            return
+        if len(list)==1:
+            self.model=list[0]
+            self.drawChips()
+            return
+        '''
         if list[0]!=[] or list[1]!=[]:
             self.player= 2 if self.player==1 else 1    
             flag=0 if list[0]!=[] else 2
@@ -100,7 +132,7 @@ class App:
                 self.drawChips()
             else:
                 self.show_winner(flag)
-
+        '''
     def show_winner(self,winner):
         if winner==1:
             messagebox.showinfo("Information","Ganaste!!!")
@@ -113,11 +145,32 @@ class App:
         print('start game')
     '''Métodos agregasos DD'''
 
-    def get_model(self):
-        return self.model
+    def change_pos(self,pos,data,select):
+        x1 = select[1] * self.cellwidth
+        y1 = select[0] * self.cellheight
+        x2 = x1 + self.cellwidth
+        y2 = y1 + self.cellheight                 
+        self.canvas.create_rectangle(x1, y1, x2, y2, fill='white' if (pos[0]+pos[1])%2==0 else 'black')
+        self.model[select[0]][select[1]]=0
+   
+        if(pos[0]==0 and data < 2):
+            self.model[pos[0]][pos[1]]=3
+        elif(pos[0]==7 and data <2):
+            self.model[pos[0]][pos[1]]=4
+        else:
+            self.model[pos[0]][pos[1]]=data
+        self.update()
+        return False
 
-    def set_model(self,list):
-        self.model=list
+    def remove_pos(self, pos):
+        self.model[pos[0]][pos[1]]=0
+        x1 = pos[0] * self.cellwidth
+        y1 = pos[1] * self.cellheight
+        x2 = x1 + self.cellwidth
+        y2 = y1 + self.cellheight
+        self.canvas.create_rectangle(x1, y1, x2, y2, fill='white' if (pos[0]+pos[1])%2==0 else 'black')
+
+    
         
         
 
