@@ -47,7 +47,7 @@ class Damas(Game):
             #print('==3')
             if(player==2):
                 #print('==2')
-                if board[moves_current[2][0]][moves_current[2][1]] == 4:
+                if board[moves_current[1][0]][moves_current[1][1]] == 4:
                     chips_deed=self.queen_kill(board, moves_current[1],player+2)
                     if len(chips_deed) > 0:
                         #realizar movimiento???
@@ -56,21 +56,21 @@ class Damas(Game):
                             moves.append(move)
                 else:
                     #print('else ==11111')
-                    chips_m = self.can_kill(board,moves_current[2], [1,3], self.DOWN, self.LEFT)
+                    chips_m = self.can_kill(board,moves_current[1], [1,3], self.DOWN, self.LEFT)
                     #hacer movimiento
                     if len(chips_m) > 0:                
                         moves.append(self.move_chip_deed(chips_m,n_state))
-                    chips_m = self.can_kill(board,moves_current[2], [1,3], self.DOWN, self.RIGHT)
+                    chips_m = self.can_kill(board,moves_current[1], [1,3], self.DOWN, self.RIGHT)
                     #hacer movimiento
                     if len(chips_m) > 0:           
                          moves.append(self.move_chip_deed(chips_m,n_state))
             else:
                 #print('else ==2')
-                chips_m = self.can_kill(board,moves_current[2], [2,4], self.UP, self.LEFT)
+                chips_m = self.can_kill(board,moves_current[1], [2,4], self.UP, self.LEFT)
                 if len(chips_m) > 0:  
                     #hacer movimiento
                     moves.append(self.move_chip_deed(chips_m,n_state))
-                chips_m = self.can_kill(board,moves_current[2], [2,4], self.UP, self.RIGHT)
+                chips_m = self.can_kill(board,moves_current[1], [2,4], self.UP, self.RIGHT)
                 if len(chips_m) > 0:  
                     #hacer movimiento
                     moves.append(self.move_chip_deed(chips_m,n_state))            
@@ -284,8 +284,9 @@ class Damas(Game):
 
     def utility(self, state, player):
         #print('utility')
-        print(state)
-        board=state.board
+        #print(state)
+        _state=copy(state)
+        board=_state.board
         nFichasMaquina = 0
         nFichasJugador = 0
         nFichasProtecM=0
@@ -318,6 +319,7 @@ class Damas(Game):
     
     def terminal_test(self, state):
         """Return True if this is a final state for the game."""
+        #falta evaluación mas profunda
         if self.count_chips_machine() == 0 or self.count_chips_user() == 0:
             return True
         return False

@@ -169,7 +169,7 @@ class App:
         x2 = x1 + self.cellwidth
         y2 = y1 + self.cellheight
         self.canvas.create_rectangle(x1, y1, x2, y2, fill='white' if (pos[0]+pos[1])%2==0 else 'black')
-
+        self.update()
     
         
         

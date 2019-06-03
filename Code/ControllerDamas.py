@@ -18,7 +18,7 @@ class ControllerDamas(Controller):
         self.select=[]
         self.played=False
         self.new_model=view.get_model()
-        self.prof=4
+        self.prof=12
         super().__init__(view,model)
 
     def obligate_check_chip(self,pos):
@@ -50,11 +50,11 @@ class ControllerDamas(Controller):
                         if not (len(self.chips_can_kill) > 0):
                             self.View.update()
                             self.View.set_player(2)
-            elif pos[0] == self.select[0]-1:  
-                if pos[1] == self.select[1]-1:
+            elif model[pos[0]][pos[1]] == 0:  
+                if pos[0] == self.select[0]-1 and pos[1] == self.select[1]-1:
                     self.can_move=self.View.change_pos(pos,model[self.select[0]][self.select[1]],self.select)
                     self.View.set_player(2)
-                if pos[1] == self.select[1]+1:
+                if pos[0] == self.select[0]-1 and pos[1] == self.select[1]+1:
                     self.can_move=self.View.change_pos(pos,model[self.select[0]][self.select[1]],self.select) 
                     self.View.set_player(2)              
         player=self.View.get_player()
@@ -78,14 +78,15 @@ class ControllerDamas(Controller):
             if(self.played==False):
                 self.new_model=self.View.get_model()
             self.new_model=self.Model.move_machine(self.new_model,self.View.get_player(),self.prof)
-
+            #print('movimiento')
+            #print(self.new_model)
             if(self.new_model!=None):
                 self.select=self.new_model[1]
-                
-                self.View.change_pos([self.new_model[2][0],self.new_model[2][1]],(self.new_model[0])[self.new_model[2][0]][self.new_model[2][1]],self.select)
+                #time.sleep(1)
+                self.can_move=self.View.change_pos([self.new_model[2][0],self.new_model[2][1]],(self.new_model[0])[self.new_model[2][0]][self.new_model[2][1]],self.select)
                 for z in self.new_model[0]:
                     print(z)
-                print(self.select)
+                #print(self.select)
                 if(len(self.new_model)>3):
                         self.View.remove_pos([self.new_model[3][0],self.new_model[3][1]])
                         self.played=True
