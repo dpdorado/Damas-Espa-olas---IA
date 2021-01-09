@@ -1,6 +1,6 @@
 # Juego - Damas Españolas
 
-Se implementa el juego de Damas Españolas con una maquina que trabaja con el algoritmo Alfa Beta con el lenguaje Python. 
+Se implementa el juego de Damas Españolas con una máquina que trabaja con el algoritmo Alfa Beta con el lenguaje Python. 
 #
 El juego de Damas Españolas, o Damas Clásicas, es considerado como la variante viva más antigua
 del juego de damas. Se practica en toda la Península Ibérica, en el Norte de África y en muchos
